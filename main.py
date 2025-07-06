@@ -126,22 +126,31 @@ with tab3:
     churn_rate = filtered_df.groupby('Gender')['Exited'].mean()
     st.bar_chart(churn_rate)
 
-    import matplotlib.pyplot as plt
-
+    import altair as alt
     st.subheader("Age Distribution")
-    fig, ax = plt.subplots(figsize=(5, 3))  # 5 inches wide, 3 inches tall
-    ax.hist(filtered_df['Age'], bins=30, color='#0072ff', edgecolor='white')
-    ax.set_xlabel('Age')
-    ax.set_ylabel('Count')
-    st.pyplot(fig)
+    age_hist = alt.Chart(filtered_df).mark_bar().encode(
+        alt.X("Age:Q", bin=alt.Bin(maxbins=30), title="Age"),
+        y=alt.Y('count()', title='Count'),
+        tooltip=['count()']
+    ).properties(
+        width=400,   # Adjust width as needed
+        height=300,
+        title="Histogram of Age"
+    )
+    st.altair_chart(age_hist, use_container_width=False)
 
     st.subheader("Salary Distribution")
-    fig, ax = plt.subplots(figsize=(5, 3))  # Adjust width and height as needed
-    ax.hist(filtered_df['EstimatedSalary'], bins=30, color='#00b894', edgecolor='white')
-    ax.set_xlabel('Estimated Salary')
-    ax.set_ylabel('Count')
-    ax.set_title('Histogram of Estimated Salary')
-    st.pyplot(fig)
+    salary_hist = alt.Chart(filtered_df).mark_bar(color='#00b894').encode(
+        alt.X("EstimatedSalary:Q", bin=alt.Bin(maxbins=30), title="Estimated Salary"),
+        y=alt.Y('count()', title='Count'),
+        tooltip=['count()']
+    ).properties(
+        width=400,   # Adjust width as needed
+        height=300,
+        title="Histogram of Estimated Salary"
+    )
+    st.altair_chart(salary_hist, use_container_width=False)
+
 
 with tab4:
     st.title("My Portfolio")
