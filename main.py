@@ -96,10 +96,11 @@ with tab3:
                 default=list(df['Geography'].unique())
             )
         with col2:
-            gender = st.multiselect(
-                "Gender", 
-                options=df['Gender'].unique(), 
-                default=list(df['Gender'].unique())
+            gender = st.radio(
+                "Gender",
+                options=df['Gender'].unique(),
+                index=0,
+                horizontal=True  # Optional: makes the radio horizontal for a modern look
             )
         with col3:
             age_range = st.slider(
