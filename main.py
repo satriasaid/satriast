@@ -96,11 +96,11 @@ with tab3:
                 default=list(df['Geography'].unique())
             )
         with col2:
-            gender = st.selectbox(
+            gender = st.multiselect(
                 "Gender",
                 options=df['Gender'].unique(),
-                index=0
-            )            
+                default=list(df['Gender'].unique())
+            )        
         with col3:
             age_range = st.slider(
                 "Age Range", 
@@ -112,7 +112,7 @@ with tab3:
     # --- Filter DataFrame ---
     filtered_df = df[
         (df['Geography'].isin(geography)) &
-        ((df['Gender'] == gender)) &
+        ((df['Gender'].isin(gender))) &
         (df['Age'] >= age_range[0]) &
         (df['Age'] <= age_range[1])
     ]
