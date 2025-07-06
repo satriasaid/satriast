@@ -113,7 +113,7 @@ with tab3:
     # --- Filter DataFrame ---
     filtered_df = df[
         (df['Geography'].isin(geography)) &
-        (df['Gender'].isin(gender)) &
+        ((df['Gender'] == gender)) &
         (df['Age'] >= age_range[0]) &
         (df['Age'] <= age_range[1])
     ]
