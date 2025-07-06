@@ -96,12 +96,11 @@ with tab3:
                 default=list(df['Geography'].unique())
             )
         with col2:
-            gender = st.radio(
+            gender = st.selectbox(
                 "Gender",
                 options=df['Gender'].unique(),
-                index=0,
-                horizontal=True  # Optional: makes the radio horizontal for a modern look
-            )
+                index=0
+            )            
         with col3:
             age_range = st.slider(
                 "Age Range", 
