@@ -1,16 +1,17 @@
 import streamlit as st
 import pandas as pd
+import altair as alt
 
 st.set_page_config(page_title="Portfolio", layout="wide", page_icon=":rocket:")
 
-# --- Custom CSS for Big, Professional Tabs ---
+# --- Theme-Adaptive CSS for Tabs ---
 st.markdown("""
     <style>
     .stTabs [data-baseweb="tab-list"] {
         font-size: 1.3rem;
         font-weight: 700;
         height: 60px;
-        background: #f8f9fa;
+        background: var(--background-color);
         border-radius: 12px 12px 0 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         padding-left: 12px;
@@ -19,22 +20,22 @@ st.markdown("""
         padding: 18px 36px;
         margin-right: 8px;
         border-radius: 12px 12px 0 0;
-        background: #ffffff;
-        color: #222;
-        border: 1px solid #e0e0e0;
+        background: var(--secondary-background-color);
+        color: var(--text-color);
+        border: 1px solid var(--primary-color);
         border-bottom: none;
         transition: background 0.2s, color 0.2s;
         box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .stTabs [aria-selected="true"] {
-        background: #0072ff;
-        color: #fff;
-        border-bottom: 2px solid #0072ff;
+        background: var(--primary-color);
+        color: var(--background-color);
+        border-bottom: 2px solid var(--primary-color);
         z-index: 2;
     }
     .stTabs [aria-selected="false"]:hover {
-        background: #e6f0ff;
-        color: #0072ff;
+        background: var(--primary-color);
+        color: var(--background-color);
     }
     .stTabs [data-baseweb="tab-highlight"] {
         background: none !important;
@@ -126,14 +127,13 @@ with tab3:
     churn_rate = filtered_df.groupby('Gender')['Exited'].mean()
     st.bar_chart(churn_rate)
 
-    import altair as alt
     st.subheader("Age Distribution")
     age_hist = alt.Chart(filtered_df).mark_bar().encode(
         alt.X("Age:Q", bin=alt.Bin(maxbins=30), title="Age"),
         y=alt.Y('count()', title='Count'),
         tooltip=['count()']
     ).properties(
-        width=400,   # Adjust width as needed
+        width=400,
         height=300,
         title="Histogram of Age"
     )
@@ -145,12 +145,20 @@ with tab3:
         y=alt.Y('count()', title='Count'),
         tooltip=['count()']
     ).properties(
-        width=400,   # Adjust width as needed
+        width=400,
         height=300,
         title="Histogram of Estimated Salary"
     )
     st.altair_chart(salary_hist, use_container_width=False)
 
+    # Optional: Download filtered data
+    csv = filtered_df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        "Download filtered data as CSV",
+        data=csv,
+        file_name="filtered_churn_data.csv",
+        mime="text/csv"
+    )
 
 with tab4:
     st.title("My Portfolio")
